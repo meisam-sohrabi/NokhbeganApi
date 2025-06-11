@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.example.nokhbegan",
+    "sha256_cert_fingerprints":
+    ["E0:23:D6:1E:9D:16:17:41:8E:35:91:FF:B1:23:43:2B:53:AB:E1:27:53:41:C1:B9:55:89:5D:7F:14:EA:22:12"]
+  }
+}]
