@@ -99,11 +99,12 @@ namespace NokhbeganApi.Service
         public async Task<ResponseVM> UserInfo(string studentId)
         {
             var student = await _userManager.FindByIdAsync(studentId);
+            var term =  _context.studentTerms.Any(c => !c.IsActive);
             if (student != null)
             {
                 var final = _mapper.Map<StudentInfoVM>(student);
 
-                if (student.Status == StudentStatus.PENDING)
+                if (student.Status == StudentStatus.PENDING && term)
                 {
                     return new ResponseVM()
                     {

@@ -8,11 +8,12 @@ namespace NokhbeganApi.Service
     public class PayService : IPay
     {
         private readonly NokhbeganDbContext _context;
+        private readonly ILogger<PayService> logger;
 
-
-        public PayService( NokhbeganDbContext context)
+        public PayService( NokhbeganDbContext context,ILogger<PayService> logger)
         {
             _context = context;
+            this.logger = logger;
         }
 
        
@@ -29,7 +30,7 @@ namespace NokhbeganApi.Service
                 return error;
 
             }
-            var payment = await _context.payments.FirstOrDefaultAsync(p => p.UserPaidId == id);
+            var payment = await _context.payments.FirstOrDefaultAsync(p => p.OrderId == id);
 
             if (payment != null)
             {
@@ -131,7 +132,7 @@ namespace NokhbeganApi.Service
                 return error;
 
             }
-            var payment = await _context.payments.FirstOrDefaultAsync(p => p.UserPaidId == id);
+            var payment = await _context.payments.FirstOrDefaultAsync(p => p.OrderId == id);
             if (payment == null)
             {
                 return new ResponseVM
@@ -145,6 +146,7 @@ namespace NokhbeganApi.Service
             payment.Message = message;
             payment.paymentStatusCode = status;
             var term = await _context.studentTerms.Where(c => c.TermId == payment.TermId && c.IsActive == false).FirstOrDefaultAsync();
+            logger.LogError($"////////{term.BookName}/////////{payment.Description}");
             if (payment.IsSuccess == false)
             {
                 term.IsActive = false;
