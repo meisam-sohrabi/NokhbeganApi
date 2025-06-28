@@ -115,7 +115,7 @@ builder.Services.AddSession(option =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

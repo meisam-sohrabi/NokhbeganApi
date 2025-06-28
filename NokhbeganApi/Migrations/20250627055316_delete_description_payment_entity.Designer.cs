@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NokhbeganApi.Context;
 
@@ -11,9 +12,11 @@ using NokhbeganApi.Context;
 namespace NokhbeganApi.Migrations
 {
     [DbContext(typeof(NokhbeganDbContext))]
-    partial class NokhbeganDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250627055316_delete_description_payment_entity")]
+    partial class delete_description_payment_entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

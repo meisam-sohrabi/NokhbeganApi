@@ -166,12 +166,12 @@ namespace NokhbeganApi.Controllers
 
         [HttpGet("GetStudentTerms")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetTermInfo(string userId)
+        public async Task<IActionResult> GetTermInfo(int page, int size,string userId)
         {
             try
             {
 
-                var result = await _admin.GetTermTime(userId);
+                var result = await _admin.GetTermTime(page,size,userId);
                 if (result.isSuccess)
                 {
                     return Ok(result);
@@ -494,6 +494,59 @@ namespace NokhbeganApi.Controllers
             }
         }
 
+        #endregion
+        #region ShowPayments
+
+        [HttpGet("ShowStudentPayments")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetStudentPayments(int page, int size, string userId)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (page <= 0 || size <= 0)
+                    {
+                        page = 1;
+                        size = 1;
+                    }
+                    var result = await _admin.GetStudentPayments(page, size, userId);
+                    if (result.isSuccess)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return BadRequest(result);
+                    }
+                }
+                else
+                {
+
+                    var error = new ResponseVM
+                    {
+                        Message = "کاربر لاگین نکرده است",
+                        isSuccess = false,
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                    return Unauthorized(error);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "an error occurred.");
+
+                var error = new ResponseVM
+                {
+                    Message = "خطای سرور رخ داده است. اگر مشکل ادامه داشت، لطفاً با پشتیبانی تماس بگیرید",
+                    isSuccess = false,
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                };
+
+                return BadRequest(error);
+            }
+        }
         #endregion
 
     }

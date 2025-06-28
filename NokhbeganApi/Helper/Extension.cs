@@ -13,7 +13,7 @@ namespace NokhbeganApi.Customized
             services.AddScoped<IUser, UserService>();
             services.AddScoped<IAdmin, AdminService>();
             services.AddScoped<IStudent, StudentService>();
-            services.AddScoped<IPay, PayService>();
+            //services.AddScoped<IPay, PayService>();
             services.AddScoped<DataSeeder>();
             return services;
         }

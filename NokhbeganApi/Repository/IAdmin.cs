@@ -8,7 +8,7 @@ namespace NokhbeganApi.Repository
         Task<ResponseVM> GetAllPendingAsync();
         Task<ResponseVM> GetAllFilterAsync(string? search);
         Task<ResponseVM> StudentTerms(string studentId, StudentTermVM term);
-        Task<ResponseVM> GetTermTime(string studentId);
+        Task<ResponseVM> GetTermTime(int page,int size,string studentId);
         Task<ResponseVM> UpdateTerm(Guid termId, StudentTermUpdate term);
         Task<ResponseVM> DeleteTerm(Guid termId);
         Task<ResponseVM> StudentNotification(string studentId, CreateNotificationVM model);
@@ -18,5 +18,6 @@ namespace NokhbeganApi.Repository
         Task<ResponseVM> AddMaxDiscount(double maxPercent);
         Task<ResponseVM> ShowMaxDiscount();
         Task<ResponseVM> ShowDiscount();
+        Task<ResponseVM> GetStudentPayments(int page,int size,string studentId);
     }
 }

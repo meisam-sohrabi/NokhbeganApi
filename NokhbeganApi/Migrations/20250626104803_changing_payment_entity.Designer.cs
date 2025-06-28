@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NokhbeganApi.Context;
 
@@ -11,9 +12,11 @@ using NokhbeganApi.Context;
 namespace NokhbeganApi.Migrations
 {
     [DbContext(typeof(NokhbeganDbContext))]
-    partial class NokhbeganDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250626104803_changing_payment_entity")]
+    partial class changing_payment_entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,6 +331,9 @@ namespace NokhbeganApi.Migrations
                     b.Property<long>("AmountWithDiscount")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
@@ -335,8 +341,7 @@ namespace NokhbeganApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentType")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("T_CustomUserId")
                         .HasColumnType("nvarchar(450)");

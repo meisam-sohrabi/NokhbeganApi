@@ -21,10 +21,10 @@ namespace NokhbeganApi.Service
         }
         public async Task<ResponseVM> GetAllAsync(string? studentId = null)
         {
-            var users = await _context.Users.Where(s => s.Id == studentId).OrderBy(c => c.InvitedDate).Include(s => s.InvitedUsers)
-                .ThenInclude(c => c.InvitedUsers)
-                .ThenInclude(c => c.InvitedUsers)
-                .ThenInclude(c => c.InvitedUsers)
+            var users = await _context.Users.Where(s => s.Id == studentId).OrderBy(c => c.InvitedDate).Include(c => c.InvitedUsers.Where(c => c.Status == StudentStatus.VERIFIED))
+                .ThenInclude(c => c.InvitedUsers.Where(c => c.Status == StudentStatus.VERIFIED))
+                .ThenInclude(c => c.InvitedUsers.Where(c => c.Status == StudentStatus.VERIFIED))
+                .ThenInclude(c => c.InvitedUsers.Where(c => c.Status == StudentStatus.VERIFIED))
                 .ToListAsync();
             if (users.Count != 0)
             {
@@ -74,18 +74,19 @@ namespace NokhbeganApi.Service
                 };
             }
             var userTerm = await _context.studentTerms.Where(c => c.UserId == studentId && c.StartedAt <= DateTime.Now && c.EndedAt >= DateTime.UtcNow).FirstOrDefaultAsync();
-            if (userTerm == null)
+            var userPayment = _context.payments.Where(c=> c.UserPaidId == studentId).FirstOrDefault();
+            if (userTerm == null && userPayment == null)
             {
                 var error = new ResponseVM
                 {
-                    Message = "هیج گونه ترم فعالی وجود نداره",
+                    Message = "هیج گونه ترم فعال و پرداختی وجود نداره",
                     isSuccess = false,
                     StatusCode = StatusCodes.Status404NotFound
                 };
                 return error;
             }
             var result = _mapper.Map<TermInfo>(userTerm);
-
+            result.AmountWithDiscount = userPayment.AmountWithDiscount;
             var success = new ResponseVM
             {
                 Message = "ترم آموزشی با موفقیت یافت شد",
